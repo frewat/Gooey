@@ -205,11 +205,11 @@ public class Gooey {
 		}
 	}
 	
-	public synchronized static <T extends GooeyRunnable<U>, U extends Window> void capture(T doRun) {
+	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(T doRun) {
 		capture( "No window detected", doRun );
 	}
 	@SuppressWarnings("unchecked")
-	public synchronized static <T extends GooeyRunnable<U>, U extends Window> void capture(String message, T doRun) {
+	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(String message, T doRun) {
 		// set capture criteria
 		ToolkitListener.setCriteria( doRun.getEventCriteria() );
 		// run code creating window

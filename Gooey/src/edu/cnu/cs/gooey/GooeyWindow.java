@@ -6,13 +6,13 @@ import java.awt.event.WindowEvent;
 
 import edu.cnu.cs.gooey.GooeyToolkitListener.EventCriteria;
 
-public abstract class GooeyRunnable <T extends Window> implements Runnable {
+public abstract class GooeyWindow <T extends Window> implements Runnable {
 	private GooeyToolkitListener.EventCriteria criteria;
 	private RuntimeException                   exception;
 	private AssertionError					   assertion;
 	private boolean                            done;
 	
-	protected GooeyRunnable(final Class<T> swing) {
+	protected GooeyWindow(final Class<T> swing) {
 		exception = null;
 		assertion = null;
 		done      = false;
