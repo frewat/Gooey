@@ -5,6 +5,7 @@ Gooey
 
 <hr>
 <h4>Notes:</h4>
-<li>This repository is structured as an Eclipse project. 
-<li>Interface is not stable. Expect changes while development is underway.
+* Repository structured as an Eclipse project.<br/>
+* Interface is not stable. Expect changes while development is underway.<br/>
+* No Javadoc yet (but it's coming)
 <hr>
