@@ -30,7 +30,8 @@ public class Gooey {
 		return result;
 	}
 	public static JLabel getLabel(Container container, final String text) {
-		return getComponent( container, new GooeyCriteria() {
+		String message = "No label \"" + text + "\" found";
+		return getComponent( message, container, new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
 				if (obj instanceof JLabel) {
@@ -41,14 +42,11 @@ public class Gooey {
 				}
 				return false;
 			}
-			@Override
-			public String toString() {
-				return "No button \"" + text + "\" found";
-			}
 		});
 	}
 	public static JButton getButton(Container container, final String text) {
-		return getComponent( container, new GooeyCriteria() {
+		String message = "No button \"" + text + "\" found";
+		return getComponent( message, container, new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
 				if (obj instanceof JButton) {
@@ -58,10 +56,6 @@ public class Gooey {
 					}
 				}
 				return false;
-			}
-			@Override
-			public String toString() {
-				return "No button \"" + text + "\" found";
 			}
 		});
 	}
@@ -123,7 +117,8 @@ public class Gooey {
 		return getComponent( container, swing, null );
 	}
 	public static <T extends Component> T getComponent(Container container, final Class<T> swing, final String name) {
-		return getComponent( container, new GooeyCriteria() {
+		String message = "No \""+ swing.getName() +"\" component" + (name == null ? "" : " \'" + name + "\'") + " found";
+		return getComponent( message, container, new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
 				if (swing.isInstance( obj )) {
@@ -133,16 +128,12 @@ public class Gooey {
 				}
 				return false;
 			}
-			@Override
-			public String toString() {
-				return "No \""+ swing.getName() +"\" component" + (name == null ? "" : " \'" + name + "\'") + " found";
-			}
 		});
 	}
-	public static <T extends Component> T getComponent(Container container, GooeyCriteria criteria) {
+	public static <T extends Component> T getComponent(String message, Container container, GooeyCriteria criteria) {
 		T   result = getNestedComponent( container, criteria );
 		if (result == null) {
-			throw new AssertionError( criteria.toString() );
+			throw new AssertionError( message );
 		}
 		return result;
 	}

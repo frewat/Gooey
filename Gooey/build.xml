@@ -4,12 +4,12 @@
 	</target>
 
 	<!-- directory names !-->
-	<property name="gooey.binnaries"   location="bin" />
-	<property name="gooey.libraries"   location="lib" />
-	<property name="gooey.source"      location="src/edu/cnu/cs/gooey/" />
-	<property name="gooey.tests"       location="src/junit/" />
+	<property name="gooey.binaries"   location="bin" />
+	<property name="gooey.libraries"  location="lib" />
+	<property name="gooey.source"     location="src/edu/cnu/cs/gooey/" />
+	<property name="gooey.tests"      location="src/junit/" />
 	<!-- file names !-->
-	<property name="gooey.jar"         value="gooey.jar" />
+	<property name="gooey.jar"        value="gooey.jar" />
 
 	<target name="clean">
 		<echo>cleaning...</echo>
