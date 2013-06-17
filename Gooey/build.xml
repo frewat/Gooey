@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project default = "main">
+	<target name="main" depends="clean, compile, jar">
+	</target>
+
+	<!-- directory names !-->
+	<property name="gooey.binnaries"   location="bin" />
+	<property name="gooey.libraries"   location="lib" />
+	<property name="gooey.source"      location="src/edu/cnu/cs/gooey/" />
+	<property name="gooey.tests"       location="src/junit/" />
+	<!-- file names !-->
+	<property name="gooey.jar"         value="gooey.jar" />
+
+	<target name="clean">
+		<echo>cleaning...</echo>
+		<delete file="${gooey.jar}"/>
+		<delete includeemptydirs="true">
+			<fileset dir="${gooey.binaries}" includes="**/*" />
+		</delete>
+	</target>
+			
+	<target name="test" depends="clean, compile">
+		<echo>testing...</echo>
+		<junit>
+			<classpath>
+				<pathelement location="${gooey.tests}"/>
+				<pathelement path="${java.class.path}"/>
+				<pathelement path="${gooey.libraries}"/>
+			</classpath>
+		</junit>
+	</target>
+			
+	<target name="compile">
+		<echo>compiling...</echo>
+		<javac srcdir="${gooey.source}" destdir="${gooey.binaries}" />
+	</target>
+						
+	<target name="jar">
+		<echo>creating jar...</echo>
+		<jar destfile="${gooey.jar}" compress="false">
+			<fileset dir="${gooey.binaries}">
+				<include name="**/*.class"/>	
+			</fileset>
+			<manifest>
+				<section name="Information">
+					<attribute name="Author"      value="Roberto A. Flores" />
+					<attribute name="Affiliation" value="Christopher Newport University, Department of Physics, Computer Science &amp; Engineering" />
+					<attribute name="Date"        value="${TODAY}" />
+				</section>
+			</manifest>
+		</jar>
+	</target>
+</project>
