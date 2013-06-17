@@ -1,7 +1,8 @@
 Gooey
 =====
 
-jUnit testing library for Java Swing applications
+<p>jUnit testing library for Java Swing applications</p>
 
-<h3>Gooey</h3>
-<p>The repository "Gooey" is structured as an Eclipse project. 
+<hr>
+This repository is structured as an Eclipse project. 
+<hr>
