@@ -1,7 +1,6 @@
 Gooey
 =====
 <i>/'GOO-e/ -- adjective. 1. Soft and sticky. 2. Mawkishly sentimental.</i><br/>
-<i>RED (2010) "You're all hard on the outside, but inside you're gooey... gooey."</i>
 
 <p>Programmatic JUnit functional testing library for Java Swing applications</p>
 
