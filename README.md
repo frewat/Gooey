@@ -2,7 +2,7 @@ Gooey
 =====
 <i>/'GOO-e/ -- adjective. 1. Soft and sticky. 2. Mawkishly sentimental.</i><br/>
 
-<p>Programmatic functional jUnit testing library for Java Swing applications</p>
+<p>jUnit testing library for Java Swing applications</p>
 
 <hr>
 <h4>Notes:</h4>
