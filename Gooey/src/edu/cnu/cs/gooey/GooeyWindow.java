@@ -49,6 +49,11 @@ public abstract class GooeyWindow <T extends Window> implements Runnable {
 			done = true;
 		}
 	}
+	public void reset() {
+		done      = false;
+		exception = null;
+		assertion = null;
+	}
 	public final void finish() {
 		Thread thread = Thread.currentThread();
 		while (!done) {

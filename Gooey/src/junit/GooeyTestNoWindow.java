@@ -1,4 +1,5 @@
 package junit;
+
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
