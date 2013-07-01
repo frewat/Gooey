@@ -1,6 +1,8 @@
 package junit;
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -36,8 +38,8 @@ public class GooeyTestJOptionPane {
 					
 					JButton ok = Gooey.getButton( dialog, "OK" );
 
-					int  count = Gooey.getComponentCount( dialog, JButton.class );
-					assertEquals ( "No buttons other than OK should exist", 1, count );
+					List<JButton> count = Gooey.getComponents( dialog, JButton.class );
+					assertEquals ( "No buttons other than OK should exist", 1, count.size() );
 
 					ok.doClick();
 					assertFalse( "JDialog should be hidden", dialog.isShowing() );
@@ -70,8 +72,8 @@ public class GooeyTestJOptionPane {
 					Gooey.getButton( dialog, "No" );
 					JButton cancel = Gooey.getButton( dialog, "Cancel" );
 
-					int     count  = Gooey.getComponentCount( dialog, JButton.class );
-					assertEquals ( "No buttons other than YES/NO/CANCEL should exist", 3, count );
+					List<JButton> count = Gooey.getComponents( dialog, JButton.class );
+					assertEquals ( "No buttons other than YES/NO/CANCEL should exist", 3, count.size() );
 
 					cancel.doClick();
 					assertFalse( "JDialog should be hidden", dialog.isShowing() );
@@ -102,14 +104,14 @@ public class GooeyTestJOptionPane {
 
 					JTextField field  = Gooey.getComponent     ( dialog, JTextField.class );
 					assertEquals( "Text field should be empty", "", field.getText() );
-					int        fields = Gooey.getComponentCount( dialog, JTextField.class );
-					assertEquals ( "Only 1 text field should exist", 1, fields );
+					List<JTextField> fields = Gooey.getComponents( dialog, JTextField.class );
+					assertEquals ( "Only 1 text field should exist", 1, fields.size() );
 
 					Gooey.getButton( dialog, "OK" );
 					JButton    cancel = Gooey.getButton( dialog, "Cancel" );
 
-					int        count  = Gooey.getComponentCount( dialog, JButton.class );
-					assertEquals ( "No buttons other than OK/CANCEL should exist", 2, count );
+					List<JButton> count = Gooey.getComponents( dialog, JButton.class );
+					assertEquals ( "No buttons other than OK/CANCEL should exist", 2, count.size() );
 
 					cancel.doClick();
 					assertFalse( "JDialog should be hidden", dialog.isShowing() );

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.junit.Test;
 
@@ -48,9 +49,14 @@ public class GooeyTestFrameWithComponents {
 	// JFrame Empty: Displayed 
 	private static class MainClassJFrameEmptyDisplayed {
 		public static void main(String[] args) {
-			JFrame frame = new JFrame( "My own title" );
-			frame.setSize( new Dimension( 150, 200 ));
-			frame.setVisible( true );
+			SwingUtilities.invokeLater( new Runnable() {
+				@Override
+				public void run() {
+					JFrame frame = new JFrame( "My own title" );
+					frame.setSize( new Dimension( 150, 200 ));
+					frame.setVisible( true );
+				}
+			});
 		}
 	}
 	@Test
@@ -100,8 +106,13 @@ public class GooeyTestFrameWithComponents {
 			pack();
 		}
 		public static void main(String[] args) {
-			JFrame frame = new MainClassJFrameNotEmptyDisplayed();
-			frame.setVisible( true );
+			SwingUtilities.invokeLater( new Runnable() {
+				@Override
+				public void run() {
+					JFrame frame = new MainClassJFrameNotEmptyDisplayed();
+					frame.setVisible( true );
+				}
+			});
 		}
 	}
 	@Test
@@ -197,8 +208,13 @@ public class GooeyTestFrameWithComponents {
 			});
 		}
 		public static void main(String[] args) {
-			JFrame f = new BMI();
-			f.setVisible( true );
+			SwingUtilities.invokeLater( new Runnable() {
+				@Override
+				public void run() {
+					JFrame f = new BMI();
+					f.setVisible( true );
+				}
+			});
 		}
 	}
 	@Test
@@ -376,7 +392,12 @@ public class GooeyTestFrameWithComponents {
 			jbtGo.addActionListener( new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent anEvent) {
-					main( new String[]{ } );
+					SwingUtilities.invokeLater( new Runnable() {
+						@Override
+						public void run() {
+							main( new String[]{ } );
+						}
+					});
 				}
 			});
 			f.setVisible( true );

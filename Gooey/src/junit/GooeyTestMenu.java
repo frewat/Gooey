@@ -142,6 +142,8 @@ public class GooeyTestMenu {
 					items = Gooey.getMenus( one2 );
 					assertEquals( "Incorrect result", 1, items.size() );
 					assertTrue  ( "Incorrect result",    items.contains( one21 ));
+					
+					frame.dispose();
 				}					
 			});
 	}
@@ -193,6 +195,8 @@ public class GooeyTestMenu {
 								Gooey.getButton( dialog, "OK").doClick();
 							}
 						});
+					
+					frame.dispose();
 				}
 			});
 	}
@@ -221,6 +225,7 @@ public class GooeyTestMenu {
 							public void handle(JDialog dialog) {
 							}
 						});
+					frame.dispose();
 				}
 			});
 	}
@@ -248,6 +253,7 @@ public class GooeyTestMenu {
 							public void handle(JDialog dialog) {
 							}
 						});
+					frame.dispose();
 				}
 			});
 	}
@@ -289,9 +295,6 @@ public class GooeyTestMenu {
 				}
 			});
 		}
-//		public static void main(String[] args) {
-//			(new LovesMe()).setVisible(true);
-//		}
 	}
 	@Test
 	public void testHasMenu() {

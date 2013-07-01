@@ -64,17 +64,6 @@ public class GooeyTestTabbedPane {
 			panel.add(filler);
 			return panel;
 		}
-
-		// /** Returns an ImageIcon, or null if the path was invalid. */
-		// protected static ImageIcon createImageIcon(String path) {
-		// java.net.URL imgURL = TabbedPaneDemo.class.getResource(path);
-		// if (imgURL != null) {
-		// return new ImageIcon(imgURL);
-		// } else {
-		// System.err.println("Couldn't find file: " + path);
-		// return null;
-		// }
-		// }
 		public static void main(String[] args) {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {
@@ -119,6 +108,8 @@ public class GooeyTestTabbedPane {
 				Gooey.getLabel( panels.get(1), "Panel #2" );
 				Gooey.getLabel( panels.get(2), "Panel #3" );
 				Gooey.getLabel( panels.get(3), "Panel #4 (has a preferred size of 410 x 50)." );
+				
+				frame.dispose();
 			}
 		});
 	}

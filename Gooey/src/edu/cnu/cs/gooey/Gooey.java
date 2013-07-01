@@ -6,6 +6,8 @@ import java.awt.Container;
 import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -21,13 +23,13 @@ import javax.swing.SwingUtilities;
  * <p>Gooey is a test library with static methods for capturing windows and retrieving their components.</p>
  * 
  * <p>Methods in this class are designed to be called in functional JUnit tests. There
- * are methods to capture displayed windows (frames & dialogs), and methods to query their
+ * are methods to capture displayed windows, and methods to query their
  * components. Once a window is captured, methods can retrieve any component by type, by name,
  * and (in the case of buttons, menus, tabs and labels) by text.  
  * </p>
  * 
  * @author robertoflores
- * 
+ * @see GooeyWindow interface to access a captured window.
  */
 public class Gooey {
 	/**
@@ -41,6 +43,12 @@ public class Gooey {
 		 Toolkit.getDefaultToolkit().addAWTEventListener( ToolkitListener, AWTEvent.WINDOW_EVENT_MASK );
 	}
 	
+	/**
+	 * Utility method to find whether a valua is in an array. Used mostly for GooeyFlag values.
+	 * @param array array of objects
+	 * @param value value sought
+	 * @return indicates whether the value was found.
+	 */
 	private static <T> boolean has(T[] array, T value) {
 		for (T a : array) {
 			if (a.equals( value )) {
@@ -49,22 +57,13 @@ public class Gooey {
 		}
 		return false;
 	}
+
+	/**
+	 * Private default (and only) constructor. No instance of Gooey can be created.
+	 */
+	private Gooey() {
+	}
 	
-//	public static JMenuBar getMenuBar(JFrame frame) {
-//		JMenuBar result = frame.getJMenuBar();
-//		if (result == null) {
-//			throw new AssertionError( "No menubar found" );
-//		}
-//		return result;
-//	}
-//	/**
-//	 * Returns whether a frame has a menu
-//	 * @param frame the frame being investigated
-//	 * @return true if a menu bar object exists; false otherwise.
-//	 */
-//	public static boolean hasMenuBar(JFrame frame) {
-//		return frame.getJMenuBar() != null;
-//	}
 	/**
 	 * Returns the component held by a tab associated with the given title.  
 	 * @param tabPane pane holding the tab.
@@ -131,7 +130,6 @@ public class Gooey {
 	 * @param frame the frame whose menu is requested.
 	 * @return the frame's menu bar.
 	 * @throws AssertionError if no menu bar is found.
-	 * @see Gooey#hasMenuBar(JFrame)
 	 */
 	public static JMenuBar getMenuBar(JFrame frame) {
 		JMenuBar menubar = frame.getJMenuBar();
@@ -149,14 +147,13 @@ public class Gooey {
 	 * nested search use the GooeyFlag.Menu.NESTED. To perform a flat search use the GooeyFlag.Menu.FLAT. If both 
 	 * were present NESTED takes precedence over FLAT.
 	 * 
-	 * @param bar menu bar holding the menu.
+	 * @param menubar menu bar holding the menu.
 	 * @param text text of the menu sought.
 	 * @param flags optional flags for text search (by label, by name) and level search (nested, flat)
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
-	 * @see #getMenu(JMenu, String, edu.cnu.cs.gooey.GooeyFlag.Menu...)
 	 */
-	public static <T extends JMenuItem> T getMenu(JMenuBar menubar, String text, GooeyFlag.Menu... flags) {
+	public static <T extends JMenuItem> T getMenu(JMenuBar menubar, String text, GooeyFlag... flags) {
 		return getMenu( menubar.getComponents(), text, flags );
 	}
 	/**
@@ -173,29 +170,29 @@ public class Gooey {
 	 * @param flags (optional) flags for text search (by label, by name) and level search (nested, flat)
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
-	 * @see #getMenu(JMenu, String, edu.cnu.cs.gooey.GooeyFlag.Menu...)
 	 */
-	public static <T extends JMenuItem> T getMenu(JMenu submenu, String text, GooeyFlag.Menu... flags) {
+	public static <T extends JMenuItem> T getMenu(JMenu submenu, String text, GooeyFlag... flags) {
 		return getMenu( submenu.getMenuComponents(), text, flags );
 	}
 	/**
 	 * Funnel method for public getMenu methods. It creates a criteria based on the given text and the flags
-	 * GooeyFlag.Menu.BY_NAME and BY_TEXT. It then calls the (possibly recursive) private getMenu. 
+	 * GooeyFlag.Menu.BY_NAME and SEARCH_FLAT. It then searches (breadth first) for a matching menu. 
 	 * @param components menu components to evaluate
 	 * @param text name or label of the menu sought. 
 	 * @param flags (optional) flags for text search (by label, by name) and level search (nested, flat)
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
-	 * @see #getMenu(Component[], GooeyCriteria, edu.cnu.cs.gooey.GooeyFlag.Menu...)
 	 */
-	private static <T extends JMenuItem> T getMenu(Component[] components, final String text, GooeyFlag.Menu... flags) {
-		final boolean doText   = has( flags, GooeyFlag.Menu.BY_TEXT )   || !has( flags, GooeyFlag.Menu.BY_NAME );
+	@SuppressWarnings("unchecked")
+	private static <T extends JMenuItem> T getMenu(Component[] components, final String text, GooeyFlag... flags) {
+		// create criteria
+		final boolean byName   = has( flags, GooeyFlag.MATCH_BY_NAME );
 		GooeyCriteria criteria = new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
 				if (obj instanceof JMenuItem) {
 					JMenuItem item = (JMenuItem) obj;
-					String    str  = doText ? item.getText() : item.getName();
+					String    str  = byName ? item.getName() : item.getText();
 					if (str.equals( text )) {
 						return true;
 					}
@@ -203,36 +200,21 @@ public class Gooey {
 				return false;
 			}
 		};
-		T next = getMenu( components, criteria, flags );
-		if (next != null) {
-			return next;
+		// search breadth first
+		boolean         goNested = !has( flags, GooeyFlag.SEARCH_FLAT );
+		List<Component> toQueue  = Arrays.asList( components );
+		List<Component> queue    = new LinkedList<Component>( toQueue );
+		while (!queue.isEmpty()) {
+			Component c = queue.remove( 0 );
+			if (criteria.isAccepted( c )) {
+				return (T)c;
+			}
+			if (goNested && c instanceof JMenu) {
+				toQueue = Arrays.asList( ((JMenu) c).getMenuComponents() );
+				queue.addAll( toQueue );
+			}
 		}
 		throw new AssertionError( "No menu \"" + text + "\" found" );
-	}
-	/**
-	 * Final method for public getMenu methods. It receives a criteria and may search nested menus recursively 
-	 * based on values in the flags parameter (GooeyFlag.Menu.NESTED or FLAT).
-	 * @param components menu components to evaluate.
-	 * @param criteria criteria identifying the menu sought. 
-	 * @param flags (optional) flags for text search (by label, by name) and level search (nested, flat)
-	 * @return menu found or null if none is found.
-	 */
-	@SuppressWarnings("unchecked")
-	private static <T extends JMenuItem> T getMenu(Component[] components, GooeyCriteria criteria, GooeyFlag.Menu... flags) {
-		boolean doNested = has( flags, GooeyFlag.Menu.NESTED ) || !has( flags, GooeyFlag.Menu.FLAT );
-		for (Component c : components) {
-			if (criteria.isAccepted( c )) {
-				return (T) c;
-			}
-			if (doNested && c instanceof JMenu) {
-				Component[] array = ((JMenu)c).getComponents();
-				T   item  = getMenu( array, criteria, flags );
-				if (item != null) {
-					return item;
-				}
-			}
-		}
-		return null;
 	}
 	
 	/**
@@ -252,12 +234,12 @@ public class Gooey {
 	}
 	/**
 	 * Returns a list with all menu options in the sub-menu provided. Nested sub-menus are not traversed.
-	 * @param menu sub-menu to evaluate.
+	 * @param submenu sub-menu to evaluate.
 	 * @return list of menu options in the sub-menu.
 	 */
-	public static List<JMenuItem> getMenus(JMenu menu) {
+	public static List<JMenuItem> getMenus(JMenu submenu) {
 		List<JMenuItem> result = new ArrayList<JMenuItem>();
-		for (Component m : menu.getMenuComponents()) {
+		for (Component m : submenu.getMenuComponents()) {
 			if (m instanceof JMenuItem) {
 				result.add( (JMenuItem) m );
 			}
@@ -266,7 +248,7 @@ public class Gooey {
 	}
 
 	/**
-	 * Returns the first component of a class found in a container, which could have other containers.
+	 * Returns the first component of a class found in a container. Nested components are searched depth first.
 	 * @param container container to evaluate.
 	 * @param swing class of component sought.
 	 * @return component found.
@@ -278,12 +260,14 @@ public class Gooey {
 	/**
 	 * Returns the first component of a class found in a container. If a name is provided (i.e., it's not null) then
 	 * the component found will match both the class and name sought.
-	 * @param container container to evaluate
-	 * @param swing
-	 * @param name
-	 * @return
+	 * @param container container to evaluate.
+	 * @param swing class of component sought.
+	 * @param name name of the component sought. It's not used if null.
+	 * @param flags (optional) flags for level search (nested, flat)
+	 * @return component found.
+	 * @throws AssertionError if no component with the given class and name is found.
 	 */
-	public static <T extends Component> T getComponent(Container container, final Class<T> swing, final String name) {
+	public static <T extends Component> T getComponent(Container container, final Class<T> swing, final String name, GooeyFlag... flags) {
 		String message = "No \""+ swing.getName() +"\" component" + (name == null ? "" : " \'" + name + "\'") + " found";
 		return getComponent( message, container, new GooeyCriteria() {
 			@Override
@@ -295,57 +279,41 @@ public class Gooey {
 				}
 				return false;
 			}
-		});
+		}, flags);
 	}
-	public static <T extends Component> T getComponent(String message, Container container, GooeyCriteria criteria) {
-		T   result = getNestedComponent( container, criteria );
-		if (result == null) {
-			throw new AssertionError( message );
-		}
-		return result;
-	}
+	/**
+	 * Returns the first component in a container that matches the given criteria.
+	 * @param message assertion message used when no component is found.
+	 * @param container container to evaluate.
+	 * @param criteria criteria indicating an accepting component.
+	 * @param flags (optional) flags for level search (nested, flat).
+	 * @return component found.
+	 * @throws AssertionError if no component with the given class and name is found.
+	 */
 	@SuppressWarnings("unchecked")
-	private static <T extends Component> T getNestedComponent(Container container, GooeyCriteria criteria) {
-		Component[] components = container.getComponents();
-		for (Component c : components) {
+	private static <T extends Component> T getComponent(String message, Container container, GooeyCriteria criteria, GooeyFlag... flags) {
+		boolean         goNested = !has( flags, GooeyFlag.SEARCH_FLAT );
+		List<Component> toQueue  = Arrays.asList( container.getComponents() );
+		List<Component> queue    = new LinkedList<Component>( toQueue );
+		while (!queue.isEmpty()) {
+			Component c = queue.remove( 0 );
 			if (criteria.isAccepted( c )) {
 				return (T)c;
 			}
-			if (c instanceof Container) {
-				T result = getNestedComponent( (Container)c, criteria );
-				if (result != null) {
-					return result;
-				}
+			if (goNested && c instanceof Container) {
+				toQueue = Arrays.asList( ((Container) c).getComponents() );
+				queue.addAll( toQueue );
 			}
 		}
-		return null;
+		throw new AssertionError( message );
 	}
 
-	public static <T extends Component> int getComponentCount(Container container, final Class<T> swing) {
-		return getComponentCount( container, new GooeyCriteria() {
-			@Override
-			public boolean isAccepted(Component obj) {
-				return swing.isInstance( obj );
-			}
-		});
-	}
-	public static int getComponentCount(Container container, GooeyCriteria criteria) {
-		return countNestedComponents( container, criteria );
-	}
-	private static int countNestedComponents(Container container, GooeyCriteria criteria) {
-		Component[] components = container.getComponents();
-		int         result     = 0;
-		for (Component c : components) {
-			if (criteria.isAccepted( c )) {
-				result++;
-			}
-			if (c instanceof Container) {
-				result += countNestedComponents( (Container)c, criteria );
-			}
-		}
-		return result;
-	}
-
+	/**
+	 * Returns all components of a given class found in a container.
+	 * @param container container to evaluate.
+	 * @param swing class of components sought.
+	 * @return list of components found.
+	 */
 	public static <T extends Component> List<T> getComponents(Container container, final Class<T> swing) {
 		return getComponents( container, new GooeyCriteria() {
 			@Override
@@ -354,27 +322,51 @@ public class Gooey {
 			}
 		});
 	}
-	public static <T extends Component> List<T> getComponents(Container container, GooeyCriteria criteria) {
-		List<T> result = new ArrayList<T>();
-		addNestedComponents( container, criteria, result );
-		return result;
-	}
+	/**
+	 * Returns all components in a container that match the given criteria.
+	 * @param container container to evaluate.
+	 * @param criteria criteria indicating an accepting component.
+	 * @return list of components found.
+	 */
 	@SuppressWarnings("unchecked")
-	private static <T extends Component> void addNestedComponents(Container container, GooeyCriteria criteria, List<T> result) {
-		Component[] components = container.getComponents();
-		for (Component c : components) {
+	public static <T extends Component> List<T> getComponents(Container container, GooeyCriteria criteria) {
+		List<T>         result  = new ArrayList<T>();
+		List<Component> toQueue = Arrays.asList( container.getComponents() );
+		List<Component> queue   = new LinkedList<Component>( toQueue );
+		while (!queue.isEmpty()) {
+			Component c = queue.remove( 0 );
 			if (criteria.isAccepted( c )) {
 				result.add( (T)c );
 			}
 			if (c instanceof Container) {
-				addNestedComponents( (Container)c, criteria, result );
+				toQueue = Arrays.asList( ((Container) c).getComponents() );
+				queue.addAll( toQueue );
 			}
 		}
+		return result;
 	}
 	
+	/**
+	 * Invokes a custom method displaying a window, waits for the window to display (within a timeout period) and invokes 
+	 * a method where testing can be performed. 
+	 * The parameter doRun is an instance of GooeyWindow with 2 abstract methods: <code>invoke</code> (overridden with the code to
+	 * display a window) and <code>handle</code> (overridden with the code to test the window displayed). 
+	 * If no window is detected within a waiting period the method throws an AssertionError.  
+	 * @param doRun interface to display and handle the test of a window.
+	 * @throws AssertionError if no window is displayed.
+	 */
 	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(T doRun) {
 		capture( "No window detected", doRun );
 	}
+	/**
+	 * Invokes a custom method displaying a window, waits for the window to display (within a timeout period) and invokes 
+	 * a method where testing can be performed. 
+	 * The parameter doRun is an instance of GooeyWindow with 2 abstract methods: <code>invoke</code> (overridden with the code to
+	 * display a window) and <code>handle</code> (overridden with the code to test the window displayed). 
+	 * If no window is detected within a waiting period the method throws an AssertionError.  
+	 * @param doRun interface to display and handle the test of a window.
+	 * @throws AssertionError if no window is displayed.
+	 */
 	@SuppressWarnings("unchecked")
 	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(String message, T doRun) {
 		// reset in cases when "doRun" is reused
