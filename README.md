@@ -11,7 +11,7 @@ Gooey
 <li>Add downloaded JAR to your Eclipse project as an "External Archive" in the "Build Path". 
 </ol>
 <hr>
-<strong>Notes:</strong>
-* The repository is structured as an Eclipse project.<br/>
-* Interface is not stable. Expect changes while development is underway.<br/>
+<strong>Notes for developers:</strong>
+* This repository is structured as an Eclipse project.<br/>
+* API is not stable. Expect changes while development is underway.<br/>
 <hr>
