@@ -1,3 +1,15 @@
+/**
+ * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
+ * Permission to use, copy, modify, distribute and sell this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * the above copyright notice appear in all copies and that both that copyright
+ * notice and this permission notice appear in supporting documentation.  
+ * The JoSE Group makes no representations about the suitability
+ * of  this software for any purpose. It is provided "as is" without express
+ * or implied warranty.</p>
+ * <p>Company: JoSE Group, Christopher Newport University</p>
+ */
+
 package junit;
 
 import javax.swing.JDialog;
@@ -8,6 +20,7 @@ import org.junit.Test;
 import edu.cnu.cs.gooey.Gooey;
 import edu.cnu.cs.gooey.GooeyDialog;
 import edu.cnu.cs.gooey.GooeyFrame;
+import edu.cnu.cs.gooey.GooeyToolkitListener;
 
 public class GooeyTestNoWindow {
 
@@ -15,7 +28,7 @@ public class GooeyTestNoWindow {
 		public static void main(String[] args) {
 		}
 	}
-	@Test(timeout=5000,expected=AssertionError.class)
+	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=AssertionError.class)
 	public void testNoWindowDisplayedWithinDefaultTimeout() {
 		Gooey.capture(
 			new GooeyFrame() {
@@ -28,7 +41,7 @@ public class GooeyTestNoWindow {
 				}
 			});
 	}
-	@Test(timeout=5000,expected=AssertionError.class)
+	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=AssertionError.class)
 	public void testNoDialogDisplayedWithinDefaultTimeout() {
 		Gooey.capture(
 			new GooeyDialog() {
@@ -43,7 +56,7 @@ public class GooeyTestNoWindow {
 	}
 
 	// Exception test
-	@Test(timeout=5000,expected=RuntimeException.class)
+	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=RuntimeException.class)
 	public void testExceptionThrownInInvoke() {
 		Gooey.capture(
 			new GooeyFrame() {

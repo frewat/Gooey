@@ -1,3 +1,15 @@
+/**
+ * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
+ * Permission to use, copy, modify, distribute and sell this software and its
+ * documentation for any purpose is hereby granted without fee, provided that
+ * the above copyright notice appear in all copies and that both that copyright
+ * notice and this permission notice appear in supporting documentation.  
+ * The JoSE Group makes no representations about the suitability
+ * of  this software for any purpose. It is provided "as is" without express
+ * or implied warranty.</p>
+ * <p>Company: JoSE Group, Christopher Newport University</p>
+ */
+
 package edu.cnu.cs.gooey;
 
 import java.awt.AWTEvent;
@@ -20,16 +32,16 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 
 /**
- * <p>Gooey is a test library with static methods for capturing windows and retrieving their components.</p>
- * 
- * <p>Methods in this class are designed to be called in functional JUnit tests. There
- * are methods to capture displayed windows, and methods to query their
+ * <p>Title: Gooey</p>
+ * <p>Description: Gooey is a jUnit test library of static methods for capturing windows and retrieving their components.<br/>
+ * Methods in this class are designed to be called in JUnit tests. There
+ * are methods to capture displayed windows and query their
  * components. Once a window is captured, methods can retrieve any component by type, by name,
- * and (in the case of buttons, menus, tabs and labels) by text.  
+ * and (in the case of buttons, menus, tabs and labels) by displayed text.  
  * </p>
- * 
- * @author robertoflores
  * @see GooeyWindow interface to access a captured window.
+ * @author <a hef="http://www.pcs.cnu.edu/~flores/">Roberto A. Flores</a>
+ * @version 0.1
  */
 public class Gooey {
 	/**
@@ -49,7 +61,7 @@ public class Gooey {
 	 * @param value value sought
 	 * @return indicates whether the value was found.
 	 */
-	private static <T> boolean has(T[] array, T value) {
+	private static <T> boolean have(T[] array, T value) {
 		for (T a : array) {
 			if (a.equals( value )) {
 				return true;
@@ -186,7 +198,7 @@ public class Gooey {
 	@SuppressWarnings("unchecked")
 	private static <T extends JMenuItem> T getMenu(Component[] components, final String text, GooeyFlag... flags) {
 		// create criteria
-		final boolean byName   = has( flags, GooeyFlag.MATCH_BY_NAME );
+		final boolean byName   = have( flags, GooeyFlag.MATCH_BY_NAME );
 		GooeyCriteria criteria = new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
@@ -201,7 +213,7 @@ public class Gooey {
 			}
 		};
 		// search breadth first
-		boolean         goNested = !has( flags, GooeyFlag.SEARCH_FLAT );
+		boolean         goNested = !have( flags, GooeyFlag.SEARCH_FLAT );
 		List<Component> toQueue  = Arrays.asList( components );
 		List<Component> queue    = new LinkedList<Component>( toQueue );
 		while (!queue.isEmpty()) {
@@ -258,6 +270,17 @@ public class Gooey {
 		return getComponent( container, swing, null );
 	}
 	/**
+	 * Returns the first component of a class found in a container. Nested components are searched depth first.
+	 * @param container container to evaluate.
+	 * @param swing class of component sought.
+	 * @return component found.
+	 * @throws AssertionError if no component of the given class is found.
+	 */
+	public static <T extends Component> T getComponent(Container container, GooeyCriteria criteria, Class<T> swing) {
+		String message = "No \""+ swing.getName() +"\" component found";
+		return getComponent( message, container, criteria );
+	}
+	/**
 	 * Returns the first component of a class found in a container. If a name is provided (i.e., it's not null) then
 	 * the component found will match both the class and name sought.
 	 * @param container container to evaluate.
@@ -292,7 +315,7 @@ public class Gooey {
 	 */
 	@SuppressWarnings("unchecked")
 	private static <T extends Component> T getComponent(String message, Container container, GooeyCriteria criteria, GooeyFlag... flags) {
-		boolean         goNested = !has( flags, GooeyFlag.SEARCH_FLAT );
+		boolean         goNested = !have( flags, GooeyFlag.SEARCH_FLAT );
 		List<Component> toQueue  = Arrays.asList( container.getComponents() );
 		List<Component> queue    = new LinkedList<Component>( toQueue );
 		while (!queue.isEmpty()) {

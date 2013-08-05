@@ -49,7 +49,10 @@
 		
 	<target name="compile">
 		<echo>compiling...</echo>
-		<javac srcdir="${gooey.source}" destdir="${gooey.binaries}" />
+		<javac srcdir="${gooey.source}" destdir="${gooey.binaries}">
+		    <include name="**/*.java"/>
+		    <exclude name="**/junit/*"/>
+		</javac>
 	</target>
 						
 	<target name="jar">
