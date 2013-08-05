@@ -13,7 +13,9 @@ Gooey
 </ol>
 <hr>
 <strong>Notes for developers:</strong>
-* This repository is structured as an Eclipse project.<br/>
-* API is not stable. Expect changes while development is underway.<br/>
-* No tutorials exist at this point. The "junit" folder has examples you can use as guidance.
+<ul>
+<li>This repository is structured as an Eclipse project.<br/>
+<li>API is not stable. Expect changes while development is underway.<br/>
+<li>No tutorials exist at this point. The "junit" folder has examples you can use as guidance.
+</ul>
 <hr>
