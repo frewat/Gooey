@@ -165,8 +165,26 @@ public class Gooey {
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
 	 */
-	public static <T extends JMenuItem> T getMenu(JMenuBar menubar, String text, GooeyFlag... flags) {
-		return getMenu( menubar.getComponents(), text, flags );
+	public static JMenu getSubMenu(JMenuBar menubar, String text, GooeyFlag... flags) {
+		return getMenu( menubar.getComponents(), JMenu.class, text, flags );
+	}
+	/**
+	 * Given a menu bar it returns the menu associated with the given text. Text may represent the label displayed 
+	 * or the programmatic name of the menu. To look for a menu by displayed label (default setting) use the 
+	 * GooeyFlag.Menu.BY_TEXT option. To look for a menu by name, use the GooeyFlag.Menu.BY_NAME option. If both 
+	 * were present BY_TEXT takes precedence over BY_NAME. Menu searches can be made throughout the menu structure
+	 * (nested search) or under the provided menu (flat search). Nested search is the default setting. To perform a
+	 * nested search use the GooeyFlag.Menu.NESTED. To perform a flat search use the GooeyFlag.Menu.FLAT. If both 
+	 * were present NESTED takes precedence over FLAT.
+	 * 
+	 * @param submenu sub-menu holding the sought menu.
+	 * @param text text of the menu sought.
+	 * @param flags optional flags for text search (by label, by name) and level search (nested, flat)
+	 * @return sub-menu found.
+	 * @throws AssertionError if no sub-menu with the given text is found.
+	 */
+	public static JMenu getSubMenu(JMenu submenu, String text, GooeyFlag... flags) {
+		return getMenu( submenu.getMenuComponents(), JMenu.class, text, flags );
 	}
 	/**
 	 * Given a sub-menu it returns the menu associated with the given text. Text may represent the label displayed 
@@ -183,8 +201,8 @@ public class Gooey {
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
 	 */
-	public static <T extends JMenuItem> T getMenu(JMenu submenu, String text, GooeyFlag... flags) {
-		return getMenu( submenu.getMenuComponents(), text, flags );
+	public static JMenuItem getMenu(JMenu submenu, String text, GooeyFlag... flags) {
+		return getMenu( submenu.getMenuComponents(), JMenuItem.class, text, flags );
 	}
 	/**
 	 * Funnel method for public getMenu methods. It creates a criteria based on the given text and the flags
@@ -196,15 +214,15 @@ public class Gooey {
 	 * @throws AssertionError if no menu with the given text is found.
 	 */
 	@SuppressWarnings("unchecked")
-	private static <T extends JMenuItem> T getMenu(Component[] components, final String text, GooeyFlag... flags) {
+	private static <T extends JMenuItem> T getMenu(Component[] components, final Class<T> swing, final String text, GooeyFlag... flags) {
 		// create criteria
 		final boolean byName   = have( flags, GooeyFlag.MATCH_BY_NAME );
 		GooeyCriteria criteria = new GooeyCriteria() {
 			@Override
 			public boolean isAccepted(Component obj) {
-				if (obj instanceof JMenuItem) {
-					JMenuItem item = (JMenuItem) obj;
-					String    str  = byName ? item.getName() : item.getText();
+				if (swing.isInstance( obj )) {
+					T      item = (T) obj;
+					String str  = byName ? item.getName() : item.getText();
 					if (str.equals( text )) {
 						return true;
 					}
@@ -268,17 +286,6 @@ public class Gooey {
 	 */
 	public static <T extends Component> T getComponent(Container container, Class<T> swing) {
 		return getComponent( container, swing, null );
-	}
-	/**
-	 * Returns the first component of a class found in a container. Nested components are searched depth first.
-	 * @param container container to evaluate.
-	 * @param swing class of component sought.
-	 * @return component found.
-	 * @throws AssertionError if no component of the given class is found.
-	 */
-	public static <T extends Component> T getComponent(Container container, GooeyCriteria criteria, Class<T> swing) {
-		String message = "No \""+ swing.getName() +"\" component found";
-		return getComponent( message, container, criteria );
 	}
 	/**
 	 * Returns the first component of a class found in a container. If a name is provided (i.e., it's not null) then
