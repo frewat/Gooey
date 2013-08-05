@@ -9,6 +9,7 @@ Gooey
 <ol>
 <li>Download the <a href="https://github.com/robertoaflores/Gooey/blob/master/Gooey/gooey.jar">latest JAR</a> build (select "View Raw" in next screen to download).
 <li>Add downloaded JAR to your Eclipse project as an "External Archive" in the "Build Path". 
+<li>Done!
 </ol>
 <hr>
 <strong>Notes for developers:</strong>
