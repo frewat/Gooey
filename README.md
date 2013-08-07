@@ -1,9 +1,7 @@
 Gooey
 =====
+<p><strong>jUnit testing library for Java Swing applications.</strong></p>
 <i>/'GOO-e/ -- adjective. 1. Soft and sticky. 2. Mawkishly sentimental.</i><br/>
-
-<p>jUnit testing library for Java Swing applications.</p>
-
 <hr>
 <h4>Using Gooey's JAR</h4>
 <ol>
