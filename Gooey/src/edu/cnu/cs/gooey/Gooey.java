@@ -56,7 +56,7 @@ public class Gooey {
 	}
 	
 	/**
-	 * Utility method to find whether a valua is in an array. Used mostly for GooeyFlag values.
+	 * Utility method to find whether a value is in an array. Used mostly for GooeyFlag values.
 	 * @param array array of objects
 	 * @param value value sought
 	 * @return indicates whether the value was found.
