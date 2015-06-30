@@ -1,3 +1,5 @@
+package junit;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -10,7 +12,6 @@
  * <p>Company: JoSE Group, Christopher Newport University</p>
  */
 
-package junit;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
@@ -49,7 +50,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameNotDisplayed.main( null );
+					MainClassJFrameNotDisplayed.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -77,7 +78,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameEmptyDisplayed.main( null );
+					MainClassJFrameEmptyDisplayed.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -133,7 +134,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameNotEmptyDisplayed.main( null );
+					MainClassJFrameNotEmptyDisplayed.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -235,7 +236,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					BMI.main( null );
+					BMI.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -312,7 +313,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameDisplaysMessageDialog.main( null );
+					MainClassJFrameDisplaysMessageDialog.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -352,7 +353,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameDisplaysMessageDialog.main( null );
+					MainClassJFrameDisplaysMessageDialog.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -421,7 +422,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameDisplaysItself.main( null );
+					MainClassJFrameDisplaysItself.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -461,7 +462,7 @@ public class GooeyTestFrameWithComponents {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameDisplaysItself.main( null );
+					MainClassJFrameDisplaysItself.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {

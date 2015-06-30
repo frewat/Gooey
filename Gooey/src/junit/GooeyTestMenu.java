@@ -1,3 +1,5 @@
+package junit;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -9,8 +11,6 @@
  * or implied warranty.</p>
  * <p>Company: JoSE Group, Christopher Newport University</p>
  */
-
-package junit;
 
 import static org.junit.Assert.*;
 
@@ -46,7 +46,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithoutMenu.main( null );
+					MainClassJFrameWithoutMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -109,7 +109,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithMenu.main( null );
+					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -165,7 +165,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithMenu.main( null );
+					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -185,7 +185,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithMenu.main( null );
+					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -218,7 +218,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithMenu.main( null );
+					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {
@@ -247,7 +247,7 @@ public class GooeyTestMenu {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassJFrameWithMenu.main( null );
+					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame frame) {

@@ -1,3 +1,5 @@
+package junit;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -10,28 +12,17 @@
  * <p>Company: JoSE Group, Christopher Newport University</p>
  */
 
-package junit;
-
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JFrame;
-import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
-
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-
 import edu.cnu.cs.gooey.Gooey;
 import edu.cnu.cs.gooey.GooeyFrame;
+import org.junit.Test;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class GooeyTestTabbedPane {
 
@@ -94,7 +85,7 @@ public class GooeyTestTabbedPane {
 		Gooey.capture( new GooeyFrame() {
 			@Override
 			public void invoke() {
-				TabbedPaneDemo.main( null );
+				TabbedPaneDemo.main( new String[]{} );
 			}
 			@Override
 			public void handle(JFrame frame) {
@@ -109,7 +100,7 @@ public class GooeyTestTabbedPane {
 				assertEquals ( "Incorrect result", "Tab 4", tabPane.getTitleAt( 3 ));
 				
 				List<JPanel> panels = Gooey.getComponents( tabPane, JPanel.class );
-				assertEquals( "Incorrect result", 4, panels.size() );
+				assertEquals( "Incorrect result", 5, panels.size());
 
 				assertEquals  ( "Incorrect result", "Does nothing",               tabPane.getToolTipTextAt(0) );
 				assertEquals  ( "Incorrect result", "Does twice as much nothing", tabPane.getToolTipTextAt(1) );

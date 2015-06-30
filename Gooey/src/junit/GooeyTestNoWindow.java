@@ -1,3 +1,5 @@
+package junit;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -9,8 +11,6 @@
  * or implied warranty.</p>
  * <p>Company: JoSE Group, Christopher Newport University</p>
  */
-
-package junit;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -34,7 +34,7 @@ public class GooeyTestNoWindow {
 			new GooeyFrame() {
 				@Override
 				public void invoke() {
-					MainClassNoWindow.main( null );
+					MainClassNoWindow.main( new String[]{} );
 				}
 				@Override
 				public void handle(JFrame window) {
@@ -47,7 +47,7 @@ public class GooeyTestNoWindow {
 			new GooeyDialog() {
 				@Override
 				public void invoke() {
-					MainClassNoWindow.main( null );
+					MainClassNoWindow.main( new String[]{} );
 				}
 				@Override
 				public void handle(JDialog window) {

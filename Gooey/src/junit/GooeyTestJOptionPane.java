@@ -1,3 +1,5 @@
+package junit;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -10,7 +12,6 @@
  * <p>Company: JoSE Group, Christopher Newport University</p>
  */
 
-package junit;
 import static org.junit.Assert.*;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class GooeyTestJOptionPane {
 			new GooeyDialog() {
 				@Override
 				public void invoke() {
-					MainClassJOptionPaneMessageDialog.main( null );
+					MainClassJOptionPaneMessageDialog.main( new String[]{} );
 				}
 				@Override
 				public void handle(JDialog dialog) {
@@ -71,7 +72,7 @@ public class GooeyTestJOptionPane {
 			new GooeyDialog() {
 				@Override
 				public void invoke() {
-					MainClassJOptionPaneConfirmDialog.main( null );
+					MainClassJOptionPaneConfirmDialog.main( new String[]{} );
 				}
 				@Override
 				public void handle(JDialog dialog) {
@@ -105,7 +106,7 @@ public class GooeyTestJOptionPane {
 			new GooeyDialog() {
 				@Override
 				public void invoke() {
-					MainClassJOptionPaneInputDialog.main( null );
+					MainClassJOptionPaneInputDialog.main( new String[]{} );
 				}
 				@Override
 				public void handle(JDialog dialog) {
