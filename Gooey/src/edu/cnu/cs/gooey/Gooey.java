@@ -12,10 +12,8 @@
 
 package edu.cnu.cs.gooey;
 
-import java.awt.AWTEvent;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +27,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JTabbedPane;
-import javax.swing.SwingUtilities;
 
 /**
  * <p>Title: Gooey</p>
@@ -45,21 +42,15 @@ import javax.swing.SwingUtilities;
  */
 public class Gooey {
 	/**
-	 * Listener receiving window events from the toolkit (refer to {@link java.awt.Toolkit} for 
-	 * details on the handling of GUI components). Listener is indirectly enabled by tests 
-	 * expecting that a window will be displayed.
-	 */
-	private static final GooeyToolkitListener ToolkitListener;
-	static {
-		 ToolkitListener = new GooeyToolkitListener();
-		 Toolkit.getDefaultToolkit().addAWTEventListener( ToolkitListener, AWTEvent.WINDOW_EVENT_MASK );
-	}
-	
-	/**
-	 * Utility method to find whether a value is in an array. Used mostly for GooeyFlag values.
+	 * Utility method to find whether a value is in an array. Used mostly for {@link #edu.cnu.cs.gooey.GooeyFlag} values.
 	 * @param array array of objects
 	 * @param value value sought
 	 * @return indicates whether the value was found.
+	 */
+	/**
+	 * @param array
+	 * @param value
+	 * @return
 	 */
 	private static <T> boolean have(T[] array, T value) {
 		for (T a : array) {
@@ -377,43 +368,30 @@ public class Gooey {
 	}
 	
 	/**
-	 * Invokes a custom method displaying a window, waits for the window to display (within a timeout period) and invokes 
-	 * a method where testing can be performed. 
-	 * The parameter doRun is an instance of GooeyWindow with 2 abstract methods: <code>invoke</code> (overridden with the code to
-	 * display a window) and <code>handle</code> (overridden with the code to test the window displayed). 
-	 * If no window is detected within a waiting period the method throws an AssertionError.  
-	 * @param doRun interface to display and handle the test of a window.
+	 * Auxiliary method for window capturing {see @link #capture(String, GooeyWindow)} using a default error message.  
+	 * @param gWindow interface to display and handle the test of a window.
+	 * @throws IllegalArgumentException if parameter is null.
 	 * @throws AssertionError if no window is displayed.
 	 */
-	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(T doRun) {
-		capture( "No window detected", doRun );
+	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(T gWindow) {
+		capture( "No window detected", gWindow );
 	}
 	/**
-	 * Invokes a custom method displaying a window, waits for the window to display (within a timeout period) and invokes 
-	 * a method where testing can be performed. 
-	 * The parameter doRun is an instance of GooeyWindow with 2 abstract methods: <code>invoke</code> (overridden with the code to
-	 * display a window) and <code>handle</code> (overridden with the code to test the window displayed). 
+	 * This method uses the capture mechanism in {@link #GooeyWindow.capture}, which calls 
+	 * the method displaying a window, waits for the window to display (within a timeout period) and calls 
+	 * the method testing this window. 
+	 * The parameter gWindow is an instance of GooeyWindow that implements methods: <code>invoke</code> 
+	 * (calls the code to display a window) and <code>test</code> (calls the code to test the window). 
 	 * If no window is detected within a waiting period the method throws an AssertionError.  
-	 * @param doRun interface to display and handle the test of a window.
+	 * @param noWindowMessage jUnit message when window cannot be captured. 
+	 * @param gWindow interface to display and handle the test of a window.
+	 * @throws IllegalArgumentException if either parameter is null.
 	 * @throws AssertionError if no window is displayed.
 	 */
-	@SuppressWarnings("unchecked")
-	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(String message, T doRun) {
-		// reset in cases when "doRun" is reused
-		doRun.reset();
-		// set capture criteria and begin listening
-		ToolkitListener.setCriteria( doRun.getEventCriteria() );
-		// runs "doRun.invoke" to create window
-		SwingUtilities.invokeLater ( doRun );
-		// "getTarget" waits until detecting window or timing out
-		U   window = (U) ToolkitListener.getTarget();
-		if (window != null) {
-			doRun.handle( window );
+	public synchronized static <T extends GooeyWindow<U>, U extends Window> void capture(String noWindowMessage, T gWindow) {
+		if (gWindow == null) {
+			throw new IllegalArgumentException( "parameter cannot be null" );
 		}
-		// wait until doRun.invoke finishes running
-		doRun.finish();
-		if (window == null) {
-			throw new AssertionError( message );
-		}
+		gWindow.capture( noWindowMessage );
 	}
 }

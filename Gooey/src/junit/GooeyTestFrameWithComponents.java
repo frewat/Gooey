@@ -53,7 +53,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameNotDisplayed.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					throw new AssertionError( "No frame should be displayed" );
 				}
 			});
@@ -81,7 +81,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameEmptyDisplayed.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertEquals ( "Incorrect result", "My own title",            frame.getTitle() );
 					assertEquals ( "Incorrect result", new Dimension( 150, 200 ), frame.getSize() );
 					assertTrue   ( "Incorrect result", frame.isShowing() );
@@ -137,7 +137,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameNotEmptyDisplayed.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertEquals ( "Incorrect result", "FlowLayout Example", frame.getTitle() );
 
 					JTextField nameFirst  = Gooey.getComponent( frame, JTextField.class, "name.first" );
@@ -239,7 +239,7 @@ public class GooeyTestFrameWithComponents {
 					BMI.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertEquals ( "Incorrect result", "Body Mass Index", frame.getTitle() );
 
 					JTextField weight = Gooey.getComponent( frame, JTextField.class, "weight" );
@@ -316,7 +316,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameDisplaysMessageDialog.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertTrue   ( "Incorrect result",     frame.isShowing() );
 					assertEquals ( "Incorrect result", "", frame.getTitle() );
 
@@ -334,7 +334,7 @@ public class GooeyTestFrameWithComponents {
 								go.doClick();
 							}
 							@Override
-							public void handle(JDialog dialog) {
+							public void test(JDialog dialog) {
 								assertTrue ( "dialog should be showing", dialog.isShowing() );
 								Gooey.getButton( dialog, "OK" ).doClick();
 								assertFalse( "dialog should be hidden",  dialog.isShowing() );
@@ -356,7 +356,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameDisplaysMessageDialog.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertTrue   ( "Incorrect result",     frame.isShowing() );
 					assertEquals ( "Incorrect result", "", frame.getTitle() );
 
@@ -375,7 +375,7 @@ public class GooeyTestFrameWithComponents {
 									go.doClick();
 								}
 								@Override
-								public void handle(JDialog dialog) {
+								public void test(JDialog dialog) {
 									assertTrue ( "dialog should be showing", dialog.isShowing() );
 									Gooey.getButton( dialog, "OK" ).doClick();
 									assertFalse( "dialog should be hidden",  dialog.isShowing() );
@@ -425,7 +425,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameDisplaysItself.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					clickGo( frame, 5 );
 				}
 				private void clickGo(JFrame frame, final int clicksLeft) {
@@ -446,7 +446,7 @@ public class GooeyTestFrameWithComponents {
 									go.doClick();
 								}
 								@Override
-								public void handle(JFrame frame) {
+								public void test(JFrame frame) {
 									clickGo( frame, clicksLeft -1 );
 								}										
 							});
@@ -465,7 +465,7 @@ public class GooeyTestFrameWithComponents {
 					MainClassJFrameDisplaysItself.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					clickGo( frame, 5 );
 				}
 				private void clickGo(JFrame frame, final int clicksLeft) {
@@ -485,7 +485,7 @@ public class GooeyTestFrameWithComponents {
 									go.doClick();
 								}
 								@Override
-								public void handle(JFrame frame) {
+								public void test(JFrame frame) {
 									clickGo( frame, clicksLeft -1 );
 								}										
 							});

@@ -43,7 +43,7 @@ public class GooeyTestJOptionPane {
 					MainClassJOptionPaneMessageDialog.main( new String[]{} );
 				}
 				@Override
-				public void handle(JDialog dialog) {
+				public void test(JDialog dialog) {
 					assertTrue  ( "JDialog should be displayed", dialog.isShowing() );
 					assertEquals( "Incorrect title", "Message",  dialog.getTitle() );
 
@@ -75,7 +75,7 @@ public class GooeyTestJOptionPane {
 					MainClassJOptionPaneConfirmDialog.main( new String[]{} );
 				}
 				@Override
-				public void handle(JDialog dialog) {
+				public void test(JDialog dialog) {
 					assertTrue  ( "JDialog should be displayed", dialog.isShowing() );
 					assertEquals( "Incorrect title", "Confirm",  dialog.getTitle() );
 
@@ -109,7 +109,7 @@ public class GooeyTestJOptionPane {
 					MainClassJOptionPaneInputDialog.main( new String[]{} );
 				}
 				@Override
-				public void handle(JDialog dialog) {
+				public void test(JDialog dialog) {
 					assertTrue  ( "JDialog should be displayed", dialog.isShowing() );
 					assertEquals( "Incorrect title", "Please",   dialog.getTitle() );
 

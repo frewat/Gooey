@@ -49,7 +49,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithoutMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertEquals( "Incorrect result", "I don't have a MenuBar", frame.getTitle());
 					Gooey.getMenuBar( frame );
 				}
@@ -112,7 +112,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					assertEquals( "Incorrect result", "I have a MenuBar", frame.getTitle());
 
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
@@ -168,7 +168,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					JMenuBar  menubar = Gooey.getMenuBar( frame );
 					JMenu     zero    = Gooey.getSubMenu( menubar, "zero" );
 					JMenuItem quit    = Gooey.getMenu   ( zero,    "quit" );
@@ -188,7 +188,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
 					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
 					JMenu           submenu = Gooey.getSubMenu( menu,     "A" );
@@ -201,7 +201,7 @@ public class GooeyTestMenu {
 								option.doClick();
 							}
 							@Override
-							public void handle(JDialog dialog) {
+							public void test(JDialog dialog) {
 								assertEquals( "Incorrect result", "Message", dialog.getTitle() );
 								Gooey.getLabel ( dialog, "Hello World" );
 								Gooey.getButton( dialog, "OK").doClick();
@@ -221,7 +221,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
 					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
 					JMenu           submenu = Gooey.getSubMenu( menu,    "B" );
@@ -234,7 +234,7 @@ public class GooeyTestMenu {
 								option.doClick();
 							}
 							@Override
-							public void handle(JDialog dialog) {
+							public void test(JDialog dialog) {
 							}
 						});
 					frame.dispose();
@@ -250,7 +250,7 @@ public class GooeyTestMenu {
 					MainClassJFrameWithMenu.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
 					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
 					final JMenuItem option  = Gooey.getMenu   ( menu,    "nothing" );
@@ -262,7 +262,7 @@ public class GooeyTestMenu {
 								option.doClick();
 							}
 							@Override
-							public void handle(JDialog dialog) {
+							public void test(JDialog dialog) {
 							}
 						});
 					frame.dispose();
@@ -339,7 +339,7 @@ public class GooeyTestMenu {
 				Gooey.getMenu( game, "Exit" ).doClick();
 			}
 			@Override
-			public void handle(JDialog dialog) {
+			public void test(JDialog dialog) {
 				assertEquals( "Incorrect result", "Exit", dialog.getTitle() );
 				Gooey.getButton( dialog, "No" ).doClick();
 			}
@@ -351,7 +351,7 @@ public class GooeyTestMenu {
 				Gooey.getMenu( game, "Exit" ).doClick();
 			}
 			@Override
-			public void handle(JDialog dialog) {
+			public void test(JDialog dialog) {
 				assertEquals( "Incorrect result", "Exit", dialog.getTitle() );				
 				Gooey.getButton( dialog, "Yes" ).doClick();
 			}
@@ -368,7 +368,7 @@ public class GooeyTestMenu {
 				Gooey.getMenu( help, "Solution" ).doClick();
 			}
 			@Override
-			public void handle(JDialog dialog) {
+			public void test(JDialog dialog) {
 				assertEquals( "Incorrect result", "Solution", dialog.getTitle() );
 				Gooey.getButton( dialog, "OK" ).doClick();
 			}
@@ -385,7 +385,7 @@ public class GooeyTestMenu {
 				Gooey.getMenu( help, "About" ).doClick();
 			}
 			@Override
-			public void handle(JDialog dialog) {
+			public void test(JDialog dialog) {
 				assertEquals( "Incorrect result", "About", dialog.getTitle() );
 				Gooey.getButton( dialog, "OK" ).doClick();
 			}

@@ -1,5 +1,7 @@
 package junit;
 
+import java.awt.Window;
+
 /**
  * <p>Copyright: Copyright (c) 2013, JoSE Group, Christopher Newport University. 
  * Permission to use, copy, modify, distribute and sell this software and its
@@ -21,14 +23,45 @@ import edu.cnu.cs.gooey.Gooey;
 import edu.cnu.cs.gooey.GooeyDialog;
 import edu.cnu.cs.gooey.GooeyFrame;
 import edu.cnu.cs.gooey.GooeyToolkitListener;
+import edu.cnu.cs.gooey.GooeyWindow;
 
 public class GooeyTestNoWindow {
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testCaptureNoGooeyWindow() {
+		Gooey.capture( null );
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testCaptureGooeyWindowWithNoClass() {
+		Gooey.capture( new GooeyWindow<Window>( null ) {
+			@Override
+			public void invoke() {
+			}
+			@Override
+			public void test(Window capturedWindow) {
+			}
+			
+		});
+	}
+
+	@Test(expected=IllegalArgumentException.class)
+	public void testCaptureGooeyWindowWithNoMessage() {
+		Gooey.capture( null, new GooeyFrame() {
+			@Override
+			public void invoke() {
+			}
+			@Override
+			public void test(JFrame capturedWindow) {
+			}
+		});
+	}
 
 	private static class MainClassNoWindow {
 		public static void main(String[] args) {
 		}
 	}
-	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=AssertionError.class)
+	@Test(timeout=GooeyToolkitListener.CAPTURE_TIMEOUT+2000,expected=AssertionError.class)
 	public void testNoWindowDisplayedWithinDefaultTimeout() {
 		Gooey.capture(
 			new GooeyFrame() {
@@ -37,11 +70,11 @@ public class GooeyTestNoWindow {
 					MainClassNoWindow.main( new String[]{} );
 				}
 				@Override
-				public void handle(JFrame window) {
+				public void test(JFrame window) {
 				}
 			});
 	}
-	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=AssertionError.class)
+	@Test(timeout=GooeyToolkitListener.CAPTURE_TIMEOUT+2000,expected=AssertionError.class)
 	public void testNoDialogDisplayedWithinDefaultTimeout() {
 		Gooey.capture(
 			new GooeyDialog() {
@@ -50,13 +83,13 @@ public class GooeyTestNoWindow {
 					MainClassNoWindow.main( new String[]{} );
 				}
 				@Override
-				public void handle(JDialog window) {
+				public void test(JDialog window) {
 				}
 			});
 	}
 
 	// Exception test
-	@Test(timeout=GooeyToolkitListener.TIMEOUT+2000,expected=RuntimeException.class)
+	@Test(timeout=GooeyToolkitListener.CAPTURE_TIMEOUT+2000,expected=RuntimeException.class)
 	public void testExceptionThrownInInvoke() {
 		Gooey.capture(
 			new GooeyFrame() {
@@ -65,11 +98,11 @@ public class GooeyTestNoWindow {
 					throw new RuntimeException();
 				}
 				@Override
-				public void handle(JFrame window) {
+				public void test(JFrame window) {
 				}
 			});
 	}
-	@Test(timeout=5000,expected=RuntimeException.class)
+	@Test(timeout=GooeyToolkitListener.CAPTURE_TIMEOUT+2000,expected=RuntimeException.class)
 	public void testExceptionThrownInHandle() {
 		Gooey.capture(
 			new GooeyFrame() {
@@ -79,7 +112,7 @@ public class GooeyTestNoWindow {
 					f.setVisible( true );
 				}
 				@Override
-				public void handle(JFrame window) {
+				public void test(JFrame window) {
 					throw new RuntimeException();
 				}
 			});
@@ -96,7 +129,7 @@ public class GooeyTestNoWindow {
 					frame.setVisible( true );
 				}
 				@Override
-				public void handle(JDialog frame) {
+				public void test(JDialog frame) {
 				}
 			});
 	}
@@ -111,7 +144,7 @@ public class GooeyTestNoWindow {
 					dialog.setVisible( true );
 				}
 				@Override
-				public void handle(JFrame frame) {
+				public void test(JFrame frame) {
 				}
 			});
 	}

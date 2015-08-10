@@ -13,25 +13,38 @@
 package edu.cnu.cs.gooey;
 
 import java.awt.AWTEvent;
+import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 
-import edu.cnu.cs.gooey.GooeyToolkitListener.EventCriteria;
+import javax.swing.SwingUtilities;
 
 public abstract class GooeyWindow <T extends Window> implements Runnable {
-	private GooeyToolkitListener.EventCriteria criteria;
+	/**
+	 * Listener receiving window events from the toolkit (refer to {@link java.awt.Toolkit} for 
+	 * details on the handling of GUI components). Listener is indirectly enabled by tests 
+	 * expecting that a window will be displayed.
+	 */
+	private static final GooeyToolkitListener LISTENER;
+	static {
+		 LISTENER = new GooeyToolkitListener();
+		 Toolkit.getDefaultToolkit().addAWTEventListener( LISTENER, AWTEvent.WINDOW_EVENT_MASK );
+	}
+
+	private GooeyToolkitListener.EventCriteria captureCriteria;
 	private RuntimeException                   exception;
 	private AssertionError					   assertion;
 	private boolean                            done;
 	
-	protected GooeyWindow(final Class<T> swing) {
-		exception = null;
-		assertion = null;
-		done      = false;
-		criteria  = new GooeyToolkitListener.EventCriteria() {
+	protected GooeyWindow(final Class<T> windowClass) {
+		if (windowClass == null) {
+			throw new IllegalArgumentException( "parameter cannot be null" );
+		}
+		onInit();
+		captureCriteria = new GooeyToolkitListener.EventCriteria() {
 			@Override
 			public boolean isAccepted(Object obj, AWTEvent event) {
-				if (swing.isInstance( obj )) {
+				if (windowClass.isInstance( obj )) {
 					long id = event.getID();
 					if ( id == WindowEvent.WINDOW_OPENED ) {
 						return true;
@@ -42,11 +55,7 @@ public abstract class GooeyWindow <T extends Window> implements Runnable {
 		};
 	}
 	public abstract void invoke();
-	public abstract void handle(T window);
-
-	public EventCriteria getEventCriteria() {
-		return criteria;
-	}
+	public abstract void test(T capturedWindow);
 
 	@Override
 	public final void run() {
@@ -61,12 +70,20 @@ public abstract class GooeyWindow <T extends Window> implements Runnable {
 			done = true;
 		}
 	}
-	public void reset() {
+	private void onInit() {
 		done      = false;
 		exception = null;
 		assertion = null;
 	}
-	public final void finish() {
+	/**
+	 * This method initializes (by calling {@link #onInit()}) the state of this object (in cases of reuse) 
+	 * and allows subclasses to add their own customization (by calling {@link #onBeforeCapture()}).
+	 * This method is called (see {@link #edu.cnu.cs.gooey.Gooey.capture}) before capturing a window.  
+	 */
+	private final void beforeCapture() {
+		onInit();
+	}
+	private final void waitInvokeEnding() {
 		Thread thread = Thread.currentThread();
 		while (!done) {
 			synchronized( thread ) {
@@ -82,6 +99,42 @@ public abstract class GooeyWindow <T extends Window> implements Runnable {
 		}
 		if (assertion != null) {
 			throw assertion;
+		}
+	}
+
+	/**
+	 * This method uses the capture mechanism in {@link #GooeyWindow.capture}, which calls 
+	 * the method displaying a window, waits for the window to display (within a timeout period) and calls 
+	 * the method testing this window. 
+	 * The parameter gWindow is an instance of GooeyWindow that implements methods: <code>invoke</code> 
+	 * (calls the code to display a window) and <code>test</code> (calls the code to test the window). 
+	 * If no window is detected within a waiting period the method throws an AssertionError.  
+	 * @param noWindowMessage jUnit message when window cannot be captured. 
+	 * @param gWindow interface to display and handle the test of a window.
+	 * @throws IllegalArgumentException if either parameter is null.
+	 * @throws AssertionError if no window is displayed.
+	 */
+	@SuppressWarnings("unchecked")
+	public synchronized void capture(String noWindowMessage) {
+		if (noWindowMessage == null) {
+			throw new IllegalArgumentException( "parameter cannot be null" );
+		}
+		// resets in cases when this GooeyWindow is reused
+		beforeCapture();
+		// sets capture criteria and begins listening
+		LISTENER.setCriteria( captureCriteria );
+		// runs method "invoke", which displays a window
+		SwingUtilities.invokeLater ( this );
+		// "getTarget" waits until detecting a window or timing out
+		T   capturedWindow = (T) LISTENER.getTarget();
+		if (capturedWindow != null) {
+			test( capturedWindow );
+		}
+		// waits until "invoke" finishes running
+		waitInvokeEnding();
+		// customizable execution after capture & test
+		if (capturedWindow == null) {
+			throw new AssertionError( noWindowMessage );
 		}
 	}
 }

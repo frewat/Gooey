@@ -88,7 +88,7 @@ public class GooeyTestTabbedPane {
 				TabbedPaneDemo.main( new String[]{} );
 			}
 			@Override
-			public void handle(JFrame frame) {
+			public void test(JFrame frame) {
 				JTabbedPane tabPane = Gooey.getComponent( frame, JTabbedPane.class );
 				assertNotNull( "Incorrect result", tabPane );
 				assertEquals ( "Incorrect result", 4, tabPane.getTabCount() );
@@ -100,7 +100,7 @@ public class GooeyTestTabbedPane {
 				assertEquals ( "Incorrect result", "Tab 4", tabPane.getTitleAt( 3 ));
 				
 				List<JPanel> panels = Gooey.getComponents( tabPane, JPanel.class );
-				assertEquals( "Incorrect result", 5, panels.size());
+				assertEquals( "Incorrect result", 4, panels.size());
 
 				assertEquals  ( "Incorrect result", "Does nothing",               tabPane.getToolTipTextAt(0) );
 				assertEquals  ( "Incorrect result", "Does twice as much nothing", tabPane.getToolTipTextAt(1) );

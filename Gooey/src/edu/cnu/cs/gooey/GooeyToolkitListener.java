@@ -16,7 +16,11 @@ import java.awt.AWTEvent;
 import java.awt.event.AWTEventListener;
 
 public class GooeyToolkitListener implements AWTEventListener {
-	public static final int TIMEOUT = 5000;
+	/**
+	 * Maximum time Gooey waits for a window to appear, from invocation to capture. 
+	 * Used {@link edu.cnu.cs.gooey.GooeyToolkitListener.testCriteria}. 
+	 */
+	public static final int CAPTURE_TIMEOUT = 5000;
 
 	public interface EventCriteria {
 		boolean isAccepted(Object obj, AWTEvent event);
@@ -31,7 +35,7 @@ public class GooeyToolkitListener implements AWTEventListener {
 	}
 	public synchronized Object getTarget() {
 		int elapsed = 0;
-		while (target == null && elapsed < TIMEOUT) {
+		while (target == null && elapsed < CAPTURE_TIMEOUT) {
 			synchronized(Thread.currentThread()) {
 				try {
 					Thread.currentThread().wait( 10 );
