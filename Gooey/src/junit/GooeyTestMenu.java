@@ -116,8 +116,8 @@ public class GooeyTestMenu {
 					assertEquals( "Incorrect result", "I have a MenuBar", frame.getTitle());
 
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
-					JMenu           zero    = Gooey.getSubMenu( menubar, "zero" );
-					JMenu           one     = Gooey.getSubMenu( menubar, "one" );
+					JMenu           zero    = Gooey.getMenu( menubar, "zero" );
+					JMenu           one     = Gooey.getMenu( menubar, "one" );
 
 					List<JMenu>     menus;
 					List<JMenuItem> items;
@@ -133,8 +133,8 @@ public class GooeyTestMenu {
 					assertEquals( "Incorrect result", 1, items.size() );
 					assertTrue  ( "Incorrect result",    items.contains( zero1 ));
 
-					JMenu     one1  = Gooey.getSubMenu( one, "A" ); 
-					JMenu     one2  = Gooey.getSubMenu( one, "B" ); 
+					JMenu     one1  = Gooey.getMenu( one, "A" ); 
+					JMenu     one2  = Gooey.getMenu( one, "B" ); 
 					JMenuItem one3  = Gooey.getMenu   ( one, "nothing" ); 
 
 					items = Gooey.getMenus( one );
@@ -170,7 +170,7 @@ public class GooeyTestMenu {
 				@Override
 				public void test(JFrame frame) {
 					JMenuBar  menubar = Gooey.getMenuBar( frame );
-					JMenu     zero    = Gooey.getSubMenu( menubar, "zero" );
+					JMenu     zero    = Gooey.getMenu( menubar, "zero" );
 					JMenuItem quit    = Gooey.getMenu   ( zero,    "quit" );
 
 					assertTrue   ( "Incorrect result", frame.isShowing() );
@@ -190,8 +190,8 @@ public class GooeyTestMenu {
 				@Override
 				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
-					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
-					JMenu           submenu = Gooey.getSubMenu( menu,     "A" );
+					JMenu           menu    = Gooey.getMenu( menubar, "one" );
+					JMenu           submenu = Gooey.getMenu( menu,     "A" );
 					final JMenuItem option  = Gooey.getMenu   ( submenu, "dialog" );
 
 					Gooey.capture( 
@@ -223,8 +223,8 @@ public class GooeyTestMenu {
 				@Override
 				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
-					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
-					JMenu           submenu = Gooey.getSubMenu( menu,    "B" );
+					JMenu           menu    = Gooey.getMenu( menubar, "one" );
+					JMenu           submenu = Gooey.getMenu( menu,    "B" );
 					final JMenuItem option  = Gooey.getMenu   ( submenu, "exception" );
 
 					Gooey.capture( 
@@ -252,7 +252,7 @@ public class GooeyTestMenu {
 				@Override
 				public void test(JFrame frame) {
 					JMenuBar        menubar = Gooey.getMenuBar( frame );
-					JMenu           menu    = Gooey.getSubMenu( menubar, "one" );
+					JMenu           menu    = Gooey.getMenu( menubar, "one" );
 					final JMenuItem option  = Gooey.getMenu   ( menu,    "nothing" );
 
 					Gooey.capture( 
@@ -311,8 +311,8 @@ public class GooeyTestMenu {
 	@Test
 	public void testHasMenu() {
 		JMenuBar menuBar = Gooey.getMenuBar( new LovesMe() );
-		JMenu    game    = Gooey.getSubMenu( menuBar, "Game" );
-		JMenu    help    = Gooey.getSubMenu( menuBar, "Help" );
+		JMenu    game    = Gooey.getMenu( menuBar, "Game" );
+		JMenu    help    = Gooey.getMenu( menuBar, "Help" );
 		
 		List<JMenu> menus = Gooey.getMenus( menuBar );
 		assertEquals( "Incorrect result", 2, menus.size() );
@@ -335,7 +335,7 @@ public class GooeyTestMenu {
 		Gooey.capture( new GooeyDialog() {
 			@Override
 			public void invoke() {
-				JMenu game = Gooey.getSubMenu( menuBar, "Game" );
+				JMenu game = Gooey.getMenu( menuBar, "Game" );
 				Gooey.getMenu( game, "Exit" ).doClick();
 			}
 			@Override
@@ -347,7 +347,7 @@ public class GooeyTestMenu {
 		Gooey.capture( new GooeyDialog() {
 			@Override
 			public void invoke() {
-				JMenu game = Gooey.getSubMenu( menuBar, "Game" );
+				JMenu game = Gooey.getMenu( menuBar, "Game" );
 				Gooey.getMenu( game, "Exit" ).doClick();
 			}
 			@Override
@@ -364,7 +364,7 @@ public class GooeyTestMenu {
 		Gooey.capture( new GooeyDialog() {
 			@Override
 			public void invoke() {
-				JMenu help = Gooey.getSubMenu( menuBar, "Help" );
+				JMenu help = Gooey.getMenu( menuBar, "Help" );
 				Gooey.getMenu( help, "Solution" ).doClick();
 			}
 			@Override
@@ -381,7 +381,7 @@ public class GooeyTestMenu {
 		Gooey.capture( new GooeyDialog() {
 			@Override
 			public void invoke() {
-				JMenu help = Gooey.getSubMenu( menuBar, "Help" );
+				JMenu help = Gooey.getMenu( menuBar, "Help" );
 				Gooey.getMenu( help, "About" ).doClick();
 			}
 			@Override

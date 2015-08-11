@@ -156,29 +156,11 @@ public class Gooey {
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
 	 */
-	public static JMenu getSubMenu(JMenuBar menubar, String text, GooeyFlag... flags) {
+	public static JMenu getMenu(JMenuBar menubar, String text, GooeyFlag... flags) {
 		return getMenu( menubar.getComponents(), JMenu.class, text, flags );
 	}
 	/**
-	 * Given a menu bar it returns the menu associated with the given text. Text may represent the label displayed 
-	 * or the programmatic name of the menu. To look for a menu by displayed label (default setting) use the 
-	 * GooeyFlag.Menu.BY_TEXT option. To look for a menu by name, use the GooeyFlag.Menu.BY_NAME option. If both 
-	 * were present BY_TEXT takes precedence over BY_NAME. Menu searches can be made throughout the menu structure
-	 * (nested search) or under the provided menu (flat search). Nested search is the default setting. To perform a
-	 * nested search use the GooeyFlag.Menu.NESTED. To perform a flat search use the GooeyFlag.Menu.FLAT. If both 
-	 * were present NESTED takes precedence over FLAT.
-	 * 
-	 * @param submenu sub-menu holding the sought menu.
-	 * @param text text of the menu sought.
-	 * @param flags optional flags for text search (by label, by name) and level search (nested, flat)
-	 * @return sub-menu found.
-	 * @throws AssertionError if no sub-menu with the given text is found.
-	 */
-	public static JMenu getSubMenu(JMenu submenu, String text, GooeyFlag... flags) {
-		return getMenu( submenu.getMenuComponents(), JMenu.class, text, flags );
-	}
-	/**
-	 * Given a sub-menu it returns the menu associated with the given text. Text may represent the label displayed 
+	 * Given a menu it returns the menu associated with the given text. Text may represent the label displayed 
 	 * or the programmatic name of the menu. To look for a menu by displayed label (default setting) use the 
 	 * GooeyFlag.Menu.BY_TEXT option. To look for a menu by name, use the GooeyFlag.Menu.BY_NAME option. If both 
 	 * were present BY_TEXT takes precedence over BY_NAME. Menu searches can be made throughout the menu structure
@@ -192,8 +174,9 @@ public class Gooey {
 	 * @return menu found.
 	 * @throws AssertionError if no menu with the given text is found.
 	 */
-	public static JMenuItem getMenu(JMenu submenu, String text, GooeyFlag... flags) {
-		return getMenu( submenu.getMenuComponents(), JMenuItem.class, text, flags );
+	@SuppressWarnings("unchecked")
+	public static <T extends JMenuItem> T getMenu(JMenu submenu, String text, GooeyFlag... flags) {
+		return (T)getMenu( submenu.getMenuComponents(), JMenuItem.class, text, flags );
 	}
 	/**
 	 * Funnel method for public getMenu methods. It creates a criteria based on the given text and the flags
